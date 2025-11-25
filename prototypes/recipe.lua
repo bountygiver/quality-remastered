@@ -49,7 +49,7 @@ for baseRecipeName, recipeData in pairs(qr_recipes.data.recipes) do
   if origRecipe.icon or origRecipe.icons then
     helpers.icon_patch(origRecipe, newRecipe)
   else
-    local product = data.raw.item[mainProduct] or data.raw.capsule[mainProduct]
+    local product = helpers.get_item_by_name(origProduct)
     helpers.icon_patch(product, newRecipe)
   end
   main_products_to_patch[mainProduct] = true
@@ -57,9 +57,9 @@ for baseRecipeName, recipeData in pairs(qr_recipes.data.recipes) do
 end
 
 for productName, _ in pairs(main_products_to_patch) do
-  local product = data.raw.item[productName] or data.raw.capsule[productName]
+  local product = helpers.get_item_by_name(productName)
   if product and product.hidden_in_factoriopedia then
-    log("Patching " .. productName .. "to be visible in factoriopedia")
+    log("Patching " .. productName .. " to be visible in factoriopedia")
     product.hidden_in_factoriopedia = false
     data:extend{product}
   end

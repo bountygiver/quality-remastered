@@ -56,10 +56,50 @@ function icon_patch(origItem, newItem)
   end
 end
 
+local item_cats = {}
+
+if data then
+  item_cats = {
+    data.raw.item, 
+    data.raw.capsule,
+    data.raw.ammo,
+    data.raw.gun,
+    data.raw.module,
+    data.raw["space-platform-starter-pack"],
+    data.raw.tool,
+    data.raw.armor,
+    data.raw["repair-tool"],
+  }
+elseif defines and defines.prototypes and defines.prototypes.item then
+  item_cats = {
+    defines.prototypes.item.item, 
+    defines.prototypes.item.capsule,
+    defines.prototypes.item.ammo,
+    defines.prototypes.item.gun,
+    defines.prototypes.item.module,
+    defines.prototypes.item["space-platform-starter-pack"],
+    defines.prototypes.item.tool,
+    defines.prototypes.item.armor,
+    defines.prototypes.item["repair-tool"],
+  }
+end
+
+function get_item_by_name(itemName)
+  for _, v in ipairs(item_cats) do
+    if v[itemName] then
+      return v[itemName]
+    end
+  end
+
+  return nil
+end
+
 return {
   recipe_name = recipe_name,
   placeholder_name = placeholder_name,
   item_from_placeholder = item_from_placeholder,
   printtable = printtable,
   icon_patch = icon_patch,
+  get_item_by_name = get_item_by_name,
+  item_cats = item_cats,
 }

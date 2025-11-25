@@ -48,12 +48,25 @@ local replace_prod_stats = function(entity, source_stack, replacement_definition
   end
 end
 
+local belts_and_loaders = {
+  ["transport-belt"] = true,
+  ["underground-belt"] = true,
+  ["splitter"] = true,
+  ["loader"] = true,
+  ["loader-1x1"] = true,
+}
+
 script.on_event(defines.events.on_script_trigger_effect, function (event)
   if (event.effect_id == "quality-placeholder-spoiled")
   then
     print_debug("A quality placeholder spoiled on tick "..event.tick.." at "..tostring(event.source_entity))
 
     local entity = event.source_entity
+
+    if entity == nil then
+      print_debug("No source entity found, unable to replace item")
+      return
+    end
 
     for i = 1, entity.get_max_inventory_index() do
       target_inventory = entity.get_inventory(i)
@@ -86,7 +99,7 @@ script.on_event(defines.events.on_script_trigger_effect, function (event)
 
     -- TODO: find a more general case that catches undergrounds and splitters rather than hardcoding names
     -- TODO: add and test loaders
-    if (entity.type == "transport-belt") or (entity.type == "underground-belt") or (entity.type == "splitter") or (entity.type == "loader") then
+    if belts_and_loaders[entity.type] then
       -- I hate hardcoding the line count, but get_transport_line throws a hard error on higher indices
       -- TODO: find a more general case for how many transport lines an entity has
       local line_count = 2

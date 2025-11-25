@@ -19,7 +19,7 @@ function addQualityItemPlaceholder(srcName, srcItem)
     error("Invalid base item "..srcName.." when generating placeholders. Obj:" .. helpers.printtable(srcItem, 1))
   end
   if srcItem.name:sub(1, 15) == "qr-placeholder-" or srcItem.parameter then
-    log("Skipping " .. srcName .." because it's a placeholder" .. srcItem.name)
+    log("Skipping " .. srcName .." because it's a placeholder")
     return
   end
   limit = limit - 1
@@ -97,7 +97,7 @@ end
 local idx = 1
 local itemsToAdd = {}
 
-for _, prototypes in pairs{data.raw.item, data.raw.capsule} do
+for _, prototypes in ipairs(helpers.item_cats) do
   for srcName, origItem in pairs(prototypes) do
     local result = addQualityItemPlaceholder(srcName, origItem)
     if result then
