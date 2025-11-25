@@ -1,106 +1,72 @@
+local qr_recipes = data.raw["mod-data"]["qr-recipes"]
+local helpers = require("__quality-remastered__.utilities.helpers")
+
+if not qr_recipes then
+  error("QR Recipes not initialized. Something wrong has happened, maybe another mod removed this data?")
+end
+
+local crafting_translation = {
+  ["basic-crafting"] = "advanced-crafting",
+  ["crafting"] = "advanced-crafting",
+  ["smelting"] = "advanced-crafting",
+}
+
+local main_products_to_patch = {}
+
+for baseRecipeName, recipeData in pairs(qr_recipes.data.recipes) do
+  local origRecipe = data.raw.recipe[baseRecipeName]
+  if not origRecipe then
+    error("Recipe not found " .. baseRecipeName)
+  end
+  local newRecipeName = helpers.recipe_name(baseRecipeName)
+  local origProduct = origRecipe.main_product or origRecipe.results[1].name
+  local mainProduct = recipeData.output_override or helpers.placeholder_name(origProduct)
+  local newRecipe = {
+    type = "recipe",
+    name = newRecipeName,
+    localised_name = {"?", {"recipe-name." .. newRecipeName}, {"recipe-name.qr-generic", {"?", {"item-name." .. origProduct}, {"entity-name." .. origProduct}}}},
+    localised_description = {"?", {"recipe-name." .. newRecipeName}, {"recipe-description.qr-generic", {"?", {"item-name." .. origProduct}, {"entity-name." .. origProduct}}}},
+    energy_required = recipeData.energy_required or (origRecipe.energy_required * 2),
+    category = crafting_translation[origRecipe.category] or origRecipe.category,
+    subgroup = recipeData.subgroup or "qr-unknown",
+    enabled = recipeData.unlock_by_technology ~= nil,
+    allow_productivity = origRecipe.allow_productivity,
+    allow_decomposition = false,
+    main_product = origProduct,
+    ingredients = recipeData.ingredients,
+    results = {
+      {
+        type = "item", name = origProduct, amount = 1, probability = 0,
+      },
+      { type = "item", name = mainProduct, amount = recipeData.resultAmount or 1,},
+    },
+  }
+  if recipeData.byproducts then
+    for i, v in ipairs(recipeData.byproducts) do
+      newRecipe.results[i + 1] = v
+    end
+  end
+  if origRecipe.icon or origRecipe.icons then
+    helpers.icon_patch(origRecipe, newRecipe)
+  else
+    local product = data.raw.item[mainProduct] or data.raw.capsule[mainProduct]
+    helpers.icon_patch(product, newRecipe)
+  end
+  main_products_to_patch[mainProduct] = true
+  data:extend{newRecipe}
+end
+
+for productName, _ in pairs(main_products_to_patch) do
+  local product = data.raw.item[productName] or data.raw.capsule[productName]
+  if product and product.hidden_in_factoriopedia then
+    log("Patching " .. productName .. "to be visible in factoriopedia")
+    product.hidden_in_factoriopedia = false
+    data:extend{product}
+  end
+end
+
 data:extend
 ({
-  {
-    type = "recipe",
-    name = "qr-iron-plate-basic",
-    category = "advanced-crafting",
-    subgroup = "qr-nauvis",
-    icons = {
-      {icon = "__base__/graphics/icons/iron-plate.png"},
-      {icon = "__quality-remastered__/graphics/icons/quality-plus-overlay.png",},
-    },
-    enabled = false,
-    energy_required = 3,
-    allow_productivity = true,
-    allow_decomposition = false,
-    main_product = "iron-plate",
-    ingredients =
-    {
-      {type = "item", name = "iron-plate", amount = 5},
-      {type = "item", name = "solid-fuel", amount = 1},
-      {type = "fluid", name = "steam", temperature=165, amount = 20}
-    },
-    results = {
-      {type="item", name="iron-plate", amount=3, probability=0},
-      {type="item", name="qr-placeholder-iron-plate", amount=3, show_details_in_recipe_tooltip=false},
-    }
-  },
-  {
-    type = "recipe",
-    name = "qr-copper-plate-basic",
-    category = "advanced-crafting",
-    subgroup = "qr-nauvis",
-    icons = {
-      {icon = "__base__/graphics/icons/copper-plate.png"},
-      {icon = "__quality-remastered__/graphics/icons/quality-plus-overlay.png",},
-    },
-    enabled = false,
-    energy_required = 2.5,
-    allow_productivity = true,
-    allow_decomposition = false,
-    main_product = "copper-plate",
-    ingredients =
-    {
-      {type = "item", name = "copper-plate", amount = 4},
-      {type = "item", name = "solid-fuel", amount = 2},
-      {type = "fluid", name = "sulfuric-acid", amount = 15}
-    },
-    results = {
-      {type="item", name="copper-plate", amount=2, probability=0},
-      {type="item", name="qr-placeholder-copper-plate", amount=2, show_details_in_recipe_tooltip=false},
-    }
-  },
-  {
-    type = "recipe",
-    name = "qr-solid-fuel-basic",
-    category = "chemistry",
-    subgroup = "qr-nauvis",
-    icons = {
-      {icon = "__base__/graphics/icons/solid-fuel.png"},
-      {icon = "__quality-remastered__/graphics/icons/quality-plus-overlay.png",},
-    },
-    enabled = false,
-    energy_required = 1.5,
-    allow_productivity = true,
-    allow_decomposition = false,
-    main_product = "solid-fuel",
-    ingredients =
-    {
-      {type = "item", name = "copper-ore", amount = 3},
-      {type = "fluid", name = "light-oil", amount = 25},
-    },
-    results = {
-      {type = "item", name="solid-fuel", amount=1, probability=0},
-      {type = "item", name="qr-placeholder-solid-fuel", amount=1, show_details_in_recipe_tooltip=false},
-    }
-  },
-  {
-    type = "recipe",
-    name = "qr-plastic-bar-basic",
-    category = "chemistry",
-    subgroup = "qr-nauvis",
-    icons = {
-      {icon = "__base__/graphics/icons/plastic-bar.png"},
-      {icon = "__quality-remastered__/graphics/icons/quality-plus-overlay.png",},
-    },
-    enabled = false,
-    energy_required = 4,
-    allow_productivity = true,
-    allow_decomposition = false,
-    main_product = "plastic-bar",
-    ingredients =
-    {
-      {type = "item", name = "coal", amount = 5},
-      {type = "item", name = "copper-ore", amount = 1},
-      {type = "fluid", name = "petroleum-gas", amount = 35},
-    },
-    results = {
-      {type = "item", name="plastic-bar", amount=4, probability=0},
-      {type = "item", name="qr-placeholder-plastic-bar", amount=4, show_details_in_recipe_tooltip=false},
-    }
-  },
-
-
   {
     type = "recipe",
     name = "qr-plastic-bacteria",
@@ -141,7 +107,7 @@ data:extend
     },
     results = {
       {type = "item", name="qr-plastic-bacteria", amount=3, probability=0},
-      {type = "item", name="qr-placeholder-plastic-bacteria", amount=3, show_details_in_recipe_tooltip=false},
+      {type = "item", name="qr-placeholder-qr-plastic-bacteria", amount=3, show_details_in_recipe_tooltip=false},
     }
   },
   {

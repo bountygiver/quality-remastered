@@ -46,6 +46,12 @@ data:extend({
     type = "item-subgroup",
     name = "qr-endgame",
     group = "quality-remastered",
+    order = "x"
+  },
+  {
+    type = "item-subgroup",
+    name = "qr-unkown",
+    group = "quality-remastered",
     order = "y"
   },
 })
