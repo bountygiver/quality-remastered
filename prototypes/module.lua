@@ -1,6 +1,6 @@
 modules = data.raw["module"]
-for index, entry in pairs(modules) do
-  if entry.effect.quality ~= nil and entry.effect.quality > 0 then
+for _, entry in pairs(modules) do
+  if entry.effect and entry.effect.quality ~= nil and entry.effect.quality > 0 then
     entry["hidden"] = true
     entry["hidden_in_factoriopedia"] = true
     data:extend({entry})

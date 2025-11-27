@@ -1,0 +1,9 @@
+{
+    "recipe": 
+    [
+        ["qr-iron-plate-basic", "qr-upquality-iron-plate"],
+        ["qr-copper-plate-basic", "qr-upquality-copper-plate"],
+        ["qr-solid-fuel-basic", "qr-upquality-solid-fuel-from-light-oil"],
+        ["qr-plastic-bar-basic", "qr-upquality-plastic-bar"]
+    ]
+}

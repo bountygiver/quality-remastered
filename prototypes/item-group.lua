@@ -20,6 +20,12 @@ data:extend({
   },
   {
     type = "item-subgroup",
+    name = "qr-nauvis-epic",
+    group = "quality-remastered",
+    order = "ab"
+  },
+  {
+    type = "item-subgroup",
     name = "qr-fulgora",
     group = "quality-remastered",
     order = "c"
@@ -50,7 +56,7 @@ data:extend({
   },
   {
     type = "item-subgroup",
-    name = "qr-unkown",
+    name = "qr-unknown",
     group = "quality-remastered",
     order = "y"
   },

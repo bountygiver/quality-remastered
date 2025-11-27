@@ -1,9 +1,12 @@
 {
   "name": "quality-remastered",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "title": "Quality Remastered",
   "author": "Niflthaena",
   "factorio_version": "2.0",
-  "dependencies": ["quality >= 2.0.0", "space-age >= 2.0.0"],
+  "dependencies": ["quality >= 2.0.0"],
+  "quality_required": true,
+  "spoiling_required": true,
+  "space_travel_required": true,
   "description": "Replaces quality modules with unique quality-upgrading recipe chains."
 }

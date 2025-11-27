@@ -1,15 +1,29 @@
 local string_func = {
-  ["string"] = function(t) return t end,
+  ["string"] = function(t) return "\"" .. t .. "\"" end,
   ["number"] = tostring,
   ["function"] = function() return "(function)" end,
   ["boolean"] = function(t) return t and "TRUE" or "FALSE" end,
   ["nil"] = function() return "(NIL)" end,
+  ["userdata"] = function(t)
+    local s = "(userdata): "
+    if (t.name) then
+      s = s .. " name: " .. t.name
+    end
+    if (t.type) then
+      s = s .. " type: " .. t.type
+    end
+    return s
+  end
 }
+
+function type_string(t)
+  return "(" .. type(t) .. ")"
+end
 
 function printtable(t, depth)
   if (type(t) == "table") then
     if depth <= 0 then
-      return "(table)"
+      return type_string(t)
     end
     local s = "{ "
     for k, v in pairs(t) do
@@ -18,7 +32,9 @@ function printtable(t, depth)
     return s .. " }"
   end
 
-  return string_func[type(t)](t)
+  local str_func = string_func[type(t)] or type_string
+
+  return str_func(t)
 end
 
 function recipe_name(inName)
@@ -60,27 +76,27 @@ local item_cats = {}
 
 if data then
   item_cats = {
-    data.raw.item, 
+    data.raw.item,
     data.raw.capsule,
     data.raw.ammo,
     data.raw.gun,
     data.raw.module,
-    data.raw["space-platform-starter-pack"],
     data.raw.tool,
     data.raw.armor,
     data.raw["repair-tool"],
+    data.raw["space-platform-starter-pack"],
   }
 elseif defines and defines.prototypes and defines.prototypes.item then
   item_cats = {
-    defines.prototypes.item.item, 
+    defines.prototypes.item.item,
     defines.prototypes.item.capsule,
     defines.prototypes.item.ammo,
     defines.prototypes.item.gun,
     defines.prototypes.item.module,
-    defines.prototypes.item["space-platform-starter-pack"],
     defines.prototypes.item.tool,
     defines.prototypes.item.armor,
     defines.prototypes.item["repair-tool"],
+    defines.prototypes.item["space-platform-starter-pack"],
   }
 end
 
