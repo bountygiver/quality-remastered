@@ -7,21 +7,14 @@ local ignored_placeholder_keys = {
   callback = true,
 }
 
-local limit = 9999
-
 function addQualityItemPlaceholder(srcName, srcItem)
   if srcItem == nil or not srcItem.name then
     error("Invalid base item "..srcName.." when generating placeholders. Obj:" .. helpers.printtable(srcItem, 1))
   end
   if srcItem.name:sub(1, 15) == "qr-placeholder-" or srcItem.parameter then
-    log("Skipping " .. srcName .." because it's a placeholder")
+    log("Quality Remasterd: Skipping " .. srcName .." because it's a placeholder")
     return
   end
-  limit = limit - 1
-  if limit <= 0 then
-    error("Prototype limit reached. Exiting...")
-  end
-  log("Patching prototype " .. srcName ..": " .. srcItem.type .. ":" .. srcItem.name)
   local placeholder_internal_name = helpers.placeholder_name(srcName)
   resultItem = {
     type = "item",

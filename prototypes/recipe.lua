@@ -76,7 +76,6 @@ end
 for productName, _ in pairs(main_products_to_patch) do
   local product = helpers.get_item_by_name(productName)
   if product and product.hidden_in_factoriopedia then
-    log("Patching " .. productName .. " to be visible in factoriopedia")
     product.hidden_in_factoriopedia = false
     data:extend{product}
   end

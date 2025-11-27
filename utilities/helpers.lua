@@ -60,7 +60,6 @@ function icon_patch(origItem, newItem)
         {icon = "__quality-remastered__/graphics/icons/quality-plus-overlay.png",}
       }
     elseif origItem.icons then
-      log("icons found " .. printtable(origItem.icons, 5))
       newItem.icons = table.deepcopy(origItem.icons)
       newItem.icons[#newItem.icons + 1] = {icon = "__quality-remastered__/graphics/icons/quality-plus-overlay.png",}
     else
