@@ -78,3 +78,10 @@ for _, prototypes in ipairs(helpers.item_cats) do
 end
 
 data:extend(itemsToAdd)
+
+if not mods["quality-remastered-sa"] then
+  local spacepack = data.raw["tool"]["space-science-pack"]
+  spacepack.rocket_launch_products = {{type = "item", name = "raw-fish", amount = 1}}
+  spacepack.send_to_orbit_mode = "automated"
+  data:extend{spacepack}
+end

@@ -147,47 +147,6 @@ if not mods["quality-remastered-sa"] then
     "epic-quality"
   )
   r.subgroup = "qr-nauvis-epic"
-  -- Upcycle Space Science
-  r = add_recipe(
-    "space-science-pack",
-    {
-      {type = "item", name = "automation-science-pack", amount = 1},
-      {type = "item", name = "logistic-science-pack", amount = 1},
-      {type = "item", name = "chemical-science-pack", amount = 1},
-      {type = "item", name = "military-science-pack", amount = 1},
-      {type = "item", name = "production-science-pack", amount = 1},
-      {type = "item", name = "utility-science-pack", amount = 1},
-      {type = "item", name = "space-science-pack", amount = 1},
-    },
-    1,
-    1,
-    "legendary-quality",
-    "space-science-pack"
-  )
-  r.subgroup = "qr-endgame"
-  -- Ingredients Reshuffle
-  r = add_recipe(
-    "space-pack-to-base",
-    {
-      {type = "item", name = "iron-ore", amount = 1},
-      {type = "item", name = "copper-ore", amount = 1},
-      {type = "item", name = "coal", amount = 1},
-      {type = "item", name = "space-science-pack", amount = 1},
-    },
-    1,
-    1,
-    "legendary-quality",
-    "copper-ore"
-  )
-  r.subgroup = "qr-endgame"
-  r.byproducts = {
-    { type = "item", name = helpers.placeholder_name("coal"), amount = 1, probability = 0.3, show_details_in_recipe_tooltip = false, },
-    { type = "item", name = "coal", amount = 1, probability = 0, },
-    { type = "item", name = helpers.placeholder_name("iron-ore"), amount = 1, probability = 0.19, show_details_in_recipe_tooltip = false, },
-    { type = "item", name = "iron-ore", amount = 1, probability = 0, },
-    { type = "item", name = helpers.placeholder_name("raw-fish"), amount = 1, probability = 0.01, show_details_in_recipe_tooltip = false, },
-    { type = "item", name = "raw-fish", amount = 1, probability = 0, },
-  }
 end
 
 data:extend{qr_recipes}

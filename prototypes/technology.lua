@@ -19,7 +19,7 @@ for origRecipeName, recipeData in pairs(qr_recipes.data.recipes) do
 end
 
 quality_technology = data.raw["technology"]["quality-module"]
-quality_technology.prerequisites = { "automation-2" }
+quality_technology.prerequisites = { "oil-processing" }
 quality_technology.effects = {
   {
     type = "unlock-quality",
@@ -55,4 +55,10 @@ for tech, unlocks in pairs(k_tech) do
     addRecipe(affected_tech, helpers.recipe_name(unlock))
   end
   data:extend({affected_tech})
+end
+
+if not mods["quality-remastered-sa"] then
+  leg_quality = data.raw["technology"]["legendary-quality"]
+  addRecipe(leg_quality, "qr-recipe-reshuffle")
+  data:extend({leg_quality})
 end

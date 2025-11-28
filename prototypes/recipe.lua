@@ -80,3 +80,40 @@ for productName, _ in pairs(main_products_to_patch) do
     data:extend{product}
   end
 end
+
+if not mods["quality-remastered-sa"] then
+  data:extend{
+    {
+      type = "recipe",
+      name = "qr-recipe-reshuffle",
+      energy_required = 10,
+      category = "advanced-crafting",
+      subgroup = "qr-endgame",
+      enabled = false,
+      allow_productivity = true,
+      allow_decomposition = true,
+      unlock_results = false,
+      auto_recycle = false,
+      icons = {
+        {icon = "__base__/graphics/icons/space-science-pack.png", icon_size=64},
+        {icon = "__base__/graphics/icons/arrows/signal-anticlockwise-circle-arrow.png", icon_size=64, scale = 0.25, shift = { x = 8, y = 8 }, floating = true},
+      },
+      main_product = "",
+      ingredients = {
+        {type = "item", name = "automation-science-pack", amount = 10},
+        {type = "item", name = "logistic-science-pack", amount = 10},
+        {type = "item", name = "chemical-science-pack", amount = 10},
+        {type = "item", name = "military-science-pack", amount = 10},
+        {type = "item", name = "production-science-pack", amount = 10},
+        {type = "item", name = "utility-science-pack", amount = 10},
+        {type = "item", name = "space-science-pack", amount = 10},
+      },
+      order = "zzz-final",
+      results = {
+        { type = "item", name = "iron-ore", amount = 10 },
+        { type = "item", name = "copper-ore", amount = 2 },
+        { type = "item", name = "coal", amount = 3 },
+      },
+    }
+  }
+end
