@@ -4,6 +4,8 @@ Date: Insert Date Here
   Major Features:
     - Separated space age recipes to a space age specific mod (Added separate recipe paths for vanilla 2.0 with nuavis only resources if space age specific mod is not active)
     - Mod now works without enabling space age (You still need to own Space Age to enable quality)
+  Bugfixes:
+    - When a placeholder "spoils" into an item with the default 1 level higher quality, it now considers whether that quality is unlocked by the force of the entity owner
   Modding:
     - Placeholder items are now generated for all items (prefixed with "qr-placeholder-")
     - Placeholder items now use locale paramatization to automatically generate to reference to the name of the item it is based on

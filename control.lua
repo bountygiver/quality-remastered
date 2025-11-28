@@ -46,7 +46,7 @@ local print_error = function(message)
   end
 end
 
-local get_replacement = function(item_stack)
+local get_replacement = function(item_stack, force)
   if (item_stack.valid_for_read == false) then
     return nil
   end
@@ -56,7 +56,9 @@ local get_replacement = function(item_stack)
   end
   local quality = item_stack.quality
   if (quality.next ~= nil) then
-    quality = quality.next
+    if not force or force.is_quality_unlocked(quality.next) then
+      quality = quality.next
+    end
   end
   local item_stack_identification = {name=replacement_name, count=item_stack.count, quality=quality}
 
@@ -115,7 +117,7 @@ function insert_replacement_to_inventory(entity, target_inventory, source_stack,
 end
 
 function replace_placeholder_on_inventory_slot(entity, target_inventory, slot_index, trash_inventory)
-  local replacement = get_replacement(target_inventory[slot_index])
+  local replacement = get_replacement(target_inventory[slot_index], entity.force)
   if (replacement == nil) then
     return nil
   end
@@ -193,7 +195,7 @@ script.on_event(defines.events.on_script_trigger_effect, function (event)
       for _, line in pairs(lines) do
         local contents = line.get_detailed_contents()
         for _, item in pairs(contents) do
-          local replacement = get_replacement(item.stack)
+          local replacement = get_replacement(item.stack, entity.force)
           if (replacement ~= nil)
           then
             print_debug("Replacing "..item.stack.name.." with "..replacement.name)
@@ -212,7 +214,7 @@ script.on_event(defines.events.on_script_trigger_effect, function (event)
 
     if (entity.type == "inserter") then
       local itemStack = entity.held_stack
-      local replacement = get_replacement(itemStack)
+      local replacement = get_replacement(itemStack, entity.force)
       if (replacement ~= nil)
       then
         print_debug("Replacing "..itemStack.name.." with "..replacement.name)
@@ -228,7 +230,7 @@ script.on_event(defines.events.on_script_trigger_effect, function (event)
 
     if (entity.type == "item-entity") then
       local itemStack = entity.stack
-      local replacement = get_replacement(itemStack)
+      local replacement = get_replacement(itemStack, entity.force)
       if (replacement ~= nil)
       then
         print_debug("Replacing "..itemStack.name.." with "..replacement.name)
