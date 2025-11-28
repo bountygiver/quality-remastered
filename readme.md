@@ -12,7 +12,7 @@ Mods may generate additional recipe by either making the recipes manually after 
   ingredients: array[IngredientPrototype]
   energy_required: double? -- This field is optional if there is an existing recipe of recipe_name, it will use twice the amount of that recipe's energy_required
   resultAmount: uint16? -- Amount of products, defaults to 1
-  category: RecipeCategoryID? -- Required if there's no existing recipe of recipe_name
+  category: RecipeCategoryID? -- Inherits the existing recipe and attempts to disable handcrafting. Defaults to "advanced-crafting"
   subgroup: ItemSubGroupID? -- Defaults to "qr-unknown"
   unlock_by_technology: TechnologyID? -- Technology that unlocks this recipe, if not provided recipe will be enabled since the game start
   output_override: ItemID? -- Required if there's no existing recipe of recipe_name

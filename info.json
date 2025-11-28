@@ -7,6 +7,6 @@
   "dependencies": ["quality >= 2.0.0"],
   "quality_required": true,
   "spoiling_required": true,
-  "space_travel_required": true,
+  "space_travel_required": false,
   "description": "Replaces quality modules with unique quality-upgrading recipe chains."
 }
