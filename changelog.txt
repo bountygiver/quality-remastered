@@ -1,0 +1,16 @@
+---------------------------------------------------------------------------------------------------
+Version: 0.2.0
+Date: Insert Date Here
+  Major Features:
+    - Separated space age recipes to a space age specific mod (Added separate recipe paths for vanilla 2.0 with nuavis only resources if space age specific mod is not active)
+    - Mod now works without enabling space age (You still need to own Space Age to enable quality)
+  Modding:
+    - Placeholder items are now generated for all items (prefixed with "qr-placeholder-")
+    - Placeholder items now use locale paramatization to automatically generate to reference to the name of the item it is based on
+    - Added mod data for other mods to add to generate a recipe automatically (it will inherit properties of an existing recipe if used with the same name, generated recipe will be prefixed with "qr-upquality-")
+    - Added remote interfaces for other mods to add custom callback for certain placeholder items to manipulate what items it will become
+  Debug:
+    - Added map settings to show/hide debugging messages
+  Compatibility:
+    - Placeholder replacement script will now also checks for 1x1 loaders
+    - Placeholder replacement script will now attempt to put items in trash slot of machine if possible
