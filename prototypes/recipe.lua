@@ -100,13 +100,11 @@ if not mods["quality-remastered-sa"] then
       },
       main_product = "",
       ingredients = {
-        {type = "item", name = "automation-science-pack", amount = 10},
-        {type = "item", name = "logistic-science-pack", amount = 10},
-        {type = "item", name = "chemical-science-pack", amount = 10},
-        {type = "item", name = "military-science-pack", amount = 10},
-        {type = "item", name = "production-science-pack", amount = 10},
-        {type = "item", name = "utility-science-pack", amount = 10},
-        {type = "item", name = "space-science-pack", amount = 10},
+        {type = "item", name = "automation-science-pack", amount = 1},
+        {type = "item", name = "logistic-science-pack", amount = 1},
+        {type = "item", name = "production-science-pack", amount = 1},
+        {type = "item", name = "utility-science-pack", amount = 1},
+        {type = "item", name = "space-science-pack", amount = 1},
       },
       order = "zzz-final",
       results = {

@@ -1,16 +1,6 @@
 local item_placeholders_raw = require("__quality-remastered__.data.item_placeholders")
 local helpers = require("__quality-remastered__.utilities.helpers")
 
-local can_print_debug = false
-local can_print_error = true
-
-function update_settings()
-  can_print_debug = not not settings.global["quality-remastered-show-debug"].value
-  can_print_error = not not settings.global["quality-remastered-show-error"].value
-end
-
-update_settings()
-
 --- use remote.call("quality-remastered", "add_callback", item-name, remote-name, remote-function) to add special handling for when a placeholder item gets spoiled into its base item
 --- params: item-name: name of the base item
 --- params: remote-name: The name of the remote interface registered
@@ -24,24 +14,30 @@ remote.add_interface("quality-remastered",
     if not (remote.interfaces[remote_name] and remote.interfaces[remote_name][remote_function]) then
       error("A mod attempts to register a callback before adding the remote interface " .. remote_name .. ":" .. remote_function)
     end
-    item_placeholders_raw[name] = {
-      callback = function (item_stack_identification)
-        return remote.call(remote_name, remote_function, item_stack_identification)
-      end
-    }
+    if storage.callbacks then
+      storage.callbacks[name] = {
+        remote_name = remote_name,
+        remote_function = remote_function,
+      }
+    end
   end
 })
 
-script.on_event(defines.events.on_runtime_mod_setting_changed, update_settings)
+local function validate_and_update_settings()
+  storage.callbacks = {}
+end
+
+script.on_init(validate_and_update_settings)
+script.on_load(validate_and_update_settings)
 
 local print_debug = function(message)
-  if (can_print_debug) then
+  if (settings.global["quality-remastered-show-debug"].value) then
     game.print(message)
   end
 end
 
 local print_error = function(message)
-  if (can_print_error) then
+  if (settings.global["quality-remastered-show-error"].value) then
     game.print(message)
   end
 end
@@ -65,6 +61,11 @@ local get_replacement = function(item_stack, force)
   local placeholder_definition = item_placeholders_raw[replacement_name]
   if placeholder_definition ~= nil and placeholder_definition["callback"] ~= nil then
     return placeholder_definition.callback(item_stack_identification)
+  else
+    placeholder_definition = storage.callbacks[replacement_name]
+    if placeholder_definition and placeholder_definition.remote_name and placeholder_definition.remote_function then
+      remote.call(placeholder_definition.remote_name, placeholder_definition.remote_function, item_stack_identification)
+    end
   end
   return item_stack_identification
 end
